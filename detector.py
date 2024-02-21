@@ -1,6 +1,9 @@
 import tensorflow as tf
 from keras.preprocessing.image import ImageDataGenerator
+import numpy as np
+from keras.preprocessing import image
 
+#This is done to feature scale the datasets (training and testing)
 train_datagen = ImageDataGenerator(rescale = 1./255,
                                    shear_range = 0.2,
                                    zoom_range = 0.2,
@@ -36,15 +39,14 @@ cnn.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accura
 
 cnn.fit(x = training_set, validation_data = test_set, epochs = 25)
 
-import numpy as np
-from keras.preprocessing import image
 test_image = image.load_img('drive/MyDrive/Data/poacher1.png', target_size = (64, 64))
 test_image = image.img_to_array(test_image)
 test_image = np.expand_dims(test_image, axis = 0)
 result = cnn.predict(test_image)
 training_set.class_indices
-if result[0][0] == 0:
-  prediction = "not poacher"
-else:
-  prediction = "poacher"
-print(prediction)
+
+def return_val():
+  if result[0][0] == 0:
+    return 0
+  else:
+    return 1
